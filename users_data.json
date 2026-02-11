@@ -1,0 +1,134 @@
+[
+  {
+    "model": "users.user",
+    "pk": 1,
+    "fields": {
+      "password": "123qwe",
+      "last_login": "2026-01-01T00:00:00.000Z",
+      "is_superuser": true,
+      "first_name": "Admin",
+      "last_name": "Admin",
+      "is_staff": true,
+      "is_active": true,
+      "date_joined": "2026-01-01T00:00:00.000Z",
+      "email": "maxim0275@yandex.ru",
+      "phone": null,
+      "city": null,
+      "avatar": "",
+      "groups": [],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "users.user",
+    "pk": 2,
+    "fields": {
+      "password": "123qwe1",
+      "last_login": null,
+      "is_superuser": false,
+      "first_name": "Тестовый1",
+      "last_name": "Тест1",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2026-01-01T00:00:00.000Z",
+      "email": "test1@test.ru",
+      "phone": null,
+      "city": null,
+      "avatar": "",
+      "groups": [],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "users.user",
+    "pk": 3,
+    "fields": {
+      "password": "123qwe2",
+      "last_login": null,
+      "is_superuser": false,
+      "first_name": "Тестовый2",
+      "last_name": "Тест2",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2026-01-01T00:00:00.000Z",
+      "email": "test2@test.ru",
+      "phone": null,
+      "city": null,
+      "avatar": "",
+      "groups": [],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "users.payments",
+    "pk": 1,
+    "fields": {
+      "user_payer": 1,
+      "date": "2026-02-20",
+      "course_paid": 2,
+      "lesson_paid": null,
+      "payment_amount": "52000.00",
+      "payment_method": "перевод на счет"
+    }
+  },
+  {
+    "model": "users.payments",
+    "pk": 2,
+    "fields": {
+      "user_payer": 2,
+      "date": "2026-01-10",
+      "course_paid": 3,
+      "lesson_paid": null,
+      "payment_amount": "45000.00",
+      "payment_method": "перевод на счет"
+    }
+  },
+  {
+    "model": "users.payments",
+    "pk": 3,
+    "fields": {
+      "user_payer": 1,
+      "date": "2026-01-14",
+      "course_paid": null,
+      "lesson_paid": 1,
+      "payment_amount": "4500.00",
+      "payment_method": "наличные"
+    }
+  },
+  {
+    "model": "users.payments",
+    "pk": 4,
+    "fields": {
+      "user_payer": 1,
+      "date": "2026-01-24",
+      "course_paid": 3,
+      "lesson_paid": null,
+      "payment_amount": "35000.00",
+      "payment_method": "перевод на счет"
+    }
+  },
+  {
+    "model": "users.payments",
+    "pk": 5,
+    "fields": {
+      "user_payer": 3,
+      "date": "2026-02-08",
+      "course_paid": null,
+      "lesson_paid": 3,
+      "payment_amount": "5500.00",
+      "payment_method": "наличные"
+    }
+  },
+  {
+    "model": "users.payments",
+    "pk": 6,
+    "fields": {
+      "user_payer": 2,
+      "date": "2026-01-11",
+      "course_paid": 3,
+      "lesson_paid": null,
+      "payment_amount": "25000.00",
+      "payment_method": "перевод на счет"
+    }
+  }
+]
