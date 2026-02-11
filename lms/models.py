@@ -1,7 +1,5 @@
 from django.db import models
 
-from lms import models
-
 
 class Course(models.Model):
     name_course = models.CharField(max_length=200, blank=False, null=False)
@@ -13,7 +11,7 @@ class Course(models.Model):
         help_text="Загрузите картинку",
     )
     description = models.TextField(blank=True,
-        null=True)
+                                   null=True)
 
     class Meta:
         verbose_name = "Курс"
@@ -33,7 +31,7 @@ class Lesson(models.Model):
         help_text="Загрузите картинку",
     )
     description = models.TextField(blank=True,
-        null=True)
+                                   null=True)
     video_link = models.URLField(blank=True, null=True)
     course = models.ForeignKey(Course, on_delete=models.PROTECT)
 
