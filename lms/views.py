@@ -10,8 +10,10 @@ from users.permissions import IsModer, IsOwner
 
 
 class CourseViewSet(ModelViewSet):
-    queryset = Course.objects.all()
     serializer_class = CourseSerializer
+
+    def get_queryset(self):
+        return Course.objects.filter(owner=self.request.user)
 
     def perform_create(self, serializer):
         course = serializer.save()
@@ -28,10 +30,11 @@ class CourseViewSet(ModelViewSet):
         return super().get_permissions()
 
 
-
 class LessonListAPIView(ListAPIView):
-    queryset = Lesson.objects.all()
     serializer_class = LessonSerializer
+
+    def get_queryset(self):
+        return Course.objects.filter(owner=self.request.user)
 
 
 class LessonDestroyAPIView(DestroyAPIView):
@@ -59,4 +62,3 @@ class LessonCreateAPIView(CreateAPIView):
 
     def perform_create(self, serializer):
         serializer.save(owner=self.request.user)
-

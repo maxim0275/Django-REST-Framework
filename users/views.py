@@ -49,3 +49,9 @@ class PaymentListView(ListAPIView):
     ordering_fields = ['date']
 
 
+class PaymentCreateAPIView(CreateAPIView):
+    serializer_class = PaymentsSerializer
+
+    def perform_create(self, serializer):
+        payment = serializer.save(user_payer=self.request.user)
+        payment.save()
