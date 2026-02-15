@@ -1,7 +1,24 @@
-from django.contrib.auth.models import AbstractUser
+from django.contrib.auth.models import AbstractUser, UserManager
 from django.db import models
+from django.db.models import Manager
 
 from lms.models import Course, Lesson
+
+class Manager(UserManager):
+    def create_user(self, email, password=None):
+        if not email:
+            raise ValueError('Пользователь должен иметь email')
+        user=self.model(email=email,)
+        user.save(using=self._db)
+        return user
+    def create_superuser(self, email, password=None):
+        user=self.model(email=email,)
+        user.username=""
+        user.is_staff=True
+        user.is_superuser=True
+        user.set_password(password)
+        user.save(using=self._db)
+        return user
 
 
 class User(AbstractUser):
@@ -21,12 +38,15 @@ class User(AbstractUser):
         max_length=100, verbose_name="Token", blank=True, null=True
     )
 
+    objects = Manager()
+
     USERNAME_FIELD = "email"
     REQUIRED_FIELDS = []
 
     class Meta:
         verbose_name = "Пользователь"
         verbose_name_plural = "Пользователи"
+        abstract = False
 
     def __str__(self):
         return self.email
