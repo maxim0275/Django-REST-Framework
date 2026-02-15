@@ -100,3 +100,64 @@ __
 
 Описаны права доступа для объектов таким образом, чтобы пользователи, которые не входят в группу модераторов, могли видеть, редактировать и удалять только свои курсы и уроки.
 
+-----------------------------------------------------------
+
+32.1 Валидаторы, пагинация и тесты
+
+Задание 1
+
+Для сохранения уроков и курсов реализована дополнительную проверка на отсутствие в материалах ссылок на сторонние ресурсы, кроме youtube.com.
+
+`    def __call__(self, value):
+        tmp_val = dict(value).get(self.field)
+        if tmp_val and 'youtube.com' not in tmp_val:
+            raise ValidationError("Нельзя использовать ссылки на сторонние ресурсы.")`
+
+Задание 2
+
+Добавлена модель подписки на обновления курса для пользователя.
+
+Реализован эндпоинт для установки подписки пользователя и на удаление подписки у пользователя.
+
+    def post(self, *args, **kwargs):
+        user = self.request.user
+        course_id = self.request.data.get('course')
+        course_item = get_object_or_404(Course, pk=course_id)
+        subs_item = Subscription.objects.filter(user=user, course=course_item)
+
+        if subs_item.exists():
+            subs_item.delete()
+            message = 'Подписка удалена'
+        else:
+            Subscription.objects.create(user=user, course=course_item)
+            message = 'Подписка добавлена'
+        return Response({"message": message})
+
+Зарегистрирован новый контроллер в url и проверена его работоспособность в Postman.
+
+
+При выборке данных по курсу пользователю присылается признак подписки текущего пользователя на курс - 
+дается информация, подписан пользователь на обновления курса или нет.
+
+    def get_is_subscription(self, course):
+        owner = self.context['request'].user
+        subscription = Subscription.objects.filter(course=course.id, user=owner.id)
+        if subscription:
+            return True
+        return False
+
+    lessons_info = LessonSerializer(
+        source='lessons',
+        many=True,
+        read_only=True,
+    )
+
+Задание 3
+
+Реализована пагинацию для вывода всех уроков и курсов.
+
+Пагинация реализована в отдельном файле paginators.py
+
+
+Задание 4
+
