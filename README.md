@@ -102,9 +102,9 @@ __
 
 -----------------------------------------------------------
 
-32.1 Валидаторы, пагинация и тесты
+**32.1 Валидаторы, пагинация и тесты**
 
-Задание 1
+**Задание 1**
 
 Для сохранения уроков и курсов реализована дополнительную проверка на отсутствие в материалах ссылок на сторонние ресурсы, кроме youtube.com.
 
@@ -113,7 +113,7 @@ __
         if tmp_val and 'youtube.com' not in tmp_val:
             raise ValidationError("Нельзя использовать ссылки на сторонние ресурсы.")`
 
-Задание 2
+**Задание 2**
 
 Добавлена модель подписки на обновления курса для пользователя.
 
@@ -152,12 +152,38 @@ __
         read_only=True,
     )
 
-Задание 3
+**Задание 3**
 
 Реализована пагинацию для вывода всех уроков и курсов.
 
 Пагинация реализована в отдельном файле paginators.py
 
 
-Задание 4
+**Задание 4**
 
+Написаны тесты, которые проверяют корректность работы CRUD уроков и функционал работы подписки на обновления курса.
+
+`Destroying test database for alias 'default'...
+
+(vsag30-1-py3.13) PS C:\Users\user2\MailingP\VSAG30_1> python manage.py test
+
+Found 13 test(s).
+
+Creating test database for alias 'default'...
+
+System check identified no issues (0 silenced).
+
+.......C:\Users\user2\MailingP\VSAG30_1\.venv\Lib\site-packages\rest_framework\pagination.py:207: UnorderedObjectListWarning: Pagination may yield inconsistent results with an unordered object_list: <class 'lms.models.Lesson'> Q
+uerySet.
+
+  paginator = self.django_paginator_class(queryset, page_size)
+......
+
+----------------------------------------------------------------------
+
+Ran 13 tests in 0.642s
+
+OK
+
+Destroying test database for alias 'default'...
+`

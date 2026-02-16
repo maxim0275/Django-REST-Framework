@@ -37,7 +37,7 @@ class LessonListAPIView(ListAPIView):
     pagination_class = LessonPagination
 
     def get_queryset(self):
-        return Course.objects.filter(owner=self.request.user)
+        return Lesson.objects.filter(owner=self.request.user)
 
 
 class LessonDestroyAPIView(DestroyAPIView):
