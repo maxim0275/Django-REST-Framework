@@ -2,6 +2,7 @@ from django.contrib.auth.models import AbstractUser, UserManager
 from django.db import models
 from django.db.models import Manager
 
+from config import settings
 from lms.models import Course, Lesson
 
 class Manager(UserManager):
@@ -109,3 +110,23 @@ class Payments(models.Model):
     @property
     def __str__(self):
         return f"{self.user_payer.email} — {self.payment_amount} ₽ — {self.date}"
+
+class Subscription(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL,
+                             on_delete=models.CASCADE,
+                             verbose_name="Пользователь подписки",
+                             null=True, blank=True,
+                             help_text="Укажите пользователя подписки")
+    course = models.ForeignKey(Course, on_delete=models.CASCADE,
+                               related_name="subscriptions",
+                               verbose_name="Курс для подписки",
+                               help_text="Укажите курс для подписки",
+                               null=True, blank=True)
+    is_active = models.BooleanField(default=False, verbose_name="Активность подписки")
+
+    def __str__(self):
+        return f'{self.user} - {self.course}({self.is_active})'
+
+    class Meta:
+        verbose_name = "Подписка"
+        verbose_name_plural = "Подписки"

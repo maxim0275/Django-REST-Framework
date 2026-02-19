@@ -27,7 +27,7 @@ class Command(BaseCommand):
         # Здесь мы получаем данные из фикстуры с курсами
         courses = []
 
-        with open("lms1_data.json", 'r') as f:
+        with open("lms_data.json", 'r') as f:
             data = json.load(f)
 
         for item in data:
