@@ -25,6 +25,7 @@ INSTALLED_APPS = [
     "users",
     "lms",
     "rest_framework_simplejwt",
+    'drf_yasg',
 ]
 
 MIDDLEWARE = [
@@ -67,6 +68,8 @@ DATABASES = {
         "PORT": os.getenv("DATABASE_PORT", default="5432"),
     }
 }
+
+STRIPE_API_KEY = os.getenv("STRIPE_API_KEY")
 
 AUTH_PASSWORD_VALIDATORS = [
     {
