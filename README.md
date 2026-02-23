@@ -195,3 +195,77 @@ Destroying test database for alias 'default'...
 Задание 2
 
 Подключена возможность оплаты курсов через https://stripe.com/docs/api.
+
+
+-----------------------------------------------------------
+
+33 Celery
+
+Настроен проект для работы с Celery. 
+
+    `(vsag30-1-py3.13) PS C:\Users\user2\MailingP\VSAG30_1> celery -A config worker -l info
+     
+     -------------- celery@MPC02 v5.6.2 (recovery)
+    --- ***** -----
+    -- ******* ---- Windows-10-10.0.19045-SP0 2026-02-23 13:40:21
+    - *** --- * ---
+      - ** ---------- [config]
+      - ** ---------- .> app:         config:0x2397bce30e0
+      - ** ---------- .> transport:   redis://localhost:6379//
+      - ** ---------- .> results:     redis://localhost:6379/
+      - *** --- * --- .> concurrency: 4 (prefork)
+      -- ******* ---- .> task events: OFF (enable -E to monitor tasks in this worker)
+      --- ***** -----
+       -------------- [queues]
+                      .> celery           exchange=celery(direct) key=celery
+    
+    
+    [tasks]
+      . lms.tasks.check_last_login_by_date
+      . lms.tasks.send_about_update_materials
+    
+    [2026-02-23 13:40:21,876: INFO/MainProcess] Connected to redis://localhost:6379//
+    [2026-02-23 13:40:21,899: INFO/MainProcess] mingle: searching for neighbors
+    [2026-02-23 13:40:22,969: INFO/MainProcess] mingle: all alone
+    [2026-02-23 13:40:23,056: INFO/MainProcess] celery@MPC02 ready.
+    [2026-02-23 13:40:23,246: INFO/SpawnPoolWorker-3] child process 11384 calling self.run()
+    [2026-02-23 13:40:23,266: INFO/SpawnPoolWorker-1] child process 6828 calling self.run()
+    [2026-02-23 13:40:23,302: INFO/SpawnPoolWorker-4] child process 15220 calling self.run()
+    [2026-02-23 13:40:23,388: INFO/SpawnPoolWorker-2] child process 17492 calling self.run()`
+
+Настроено приложение на работу с celery-beat для выполнения периодических задач.
+
+`CELERY_BEAT_SCHEDULE = {
+    'check_last_login_by_date': {
+        'task': 'lms.tasks.check_last_login_by_date',  # Путь к задаче
+        'schedule': timedelta(days=1),  # Расписание выполнения задачи (например, каждый день)
+    },
+}`
+
+Задание 2
+
+Добавлена асинхронная рассылка писем пользователям об обновлении материалов курса.
+
+    def update(self, request, *args, **kwargs):
+        """Отправка пользователям, имеющим подписку на курс, информации об обновлении курса."""
+        # Список пользователей, подписанных на курс
+        email_list = list(Subscription.objects.filter(course=kwargs['pk']).values_list('user__email', flat=True))
+        send_about_update_lms.delay(email_list)
+        return super().update(request, *args, **kwargs)
+
+
+Задание 3
+
+С помощью celery-beat реализована фоновая задача, которая проверяет пользователей по дате последнего входа по полю last_login и, если пользователь не заходил более месяца, блокировать его с помощью флага is_active.
+
+РАСПИСАНИЕ
+
+    CELERY_BEAT_SCHEDULE = {
+        'check_last_login_by_date': {
+            'task': 'lms.tasks.check_last_login_by_date',  # Путь к задаче
+            'schedule': timedelta(days=1),  # Расписание выполнения задачи (например, каждый день)
+        },
+    }
+
+ЗАДАЧА
+    def check_last_login_by_date():
